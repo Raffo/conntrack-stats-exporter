@@ -1,0 +1,18 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+
+  build:
+ 
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build and push
+      run: |
+        # always use latest tag
+        docker build . --file Dockerfile --tag x0rg/conntrack-stats-exporter
+        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u x0rg --password-stdin
+        docker push x0rg/conntrack-stats-exporter
